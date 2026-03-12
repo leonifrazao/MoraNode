@@ -1,8 +1,10 @@
 package com.leonifrazao.MoraNode.infrastructure.adapter.web;
 
+import com.leonifrazao.MoraNode.domain.model.ContratoDomain;
 import com.leonifrazao.MoraNode.domain.port.in.BuscaContratoUseCase;
 import com.leonifrazao.MoraNode.domain.port.in.CadastrarContratoUseCase;
 import com.leonifrazao.MoraNode.infrastructure.adapter.in.web.dto.ContratoRequest;
+import com.leonifrazao.MoraNode.infrastructure.adapter.in.web.dto.StatusRequest;
 import com.leonifrazao.MoraNode.infrastructure.adapter.out.web.dto.ContratoResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +33,18 @@ public class ContratoController {
                 .map(ContratoResponse::fromDomain)
                 .toList();
         return ResponseEntity.ok(contratos);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<ContratoResponse> buscarPorId(@PathVariable Long id) {
+        ContratoDomain imovel = buscaContratoUseCase.buscarPorId(id);
+        ContratoResponse resposta = ContratoResponse.fromDomain(imovel);
+        return ResponseEntity.ok(resposta);
+    }
+
+    @PatchMapping("/{id}/status")
+    public ResponseEntity<Void> atualizarStatus(@PathVariable Long id, @RequestBody StatusRequest request) {
+        contratoCadastroService.atualizarStatus(id, request.statusContrato());
+        return ResponseEntity.noContent().build();
     }
 }

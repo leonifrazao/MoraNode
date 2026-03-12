@@ -19,4 +19,10 @@ public class KafkaImovelConsumerAdapter {
         log.info("Kafka: Recebida ocupação do imóvel ID {}", evento.imovelId());
         cadastrarImovelUseCase.alterarDisponibilidade(evento.imovelId(), false);
     }
+
+    @KafkaListener(topics = "imovel-desocupado-topic", groupId = "moranode-group")
+    public void ouvirImovelDescupado(ImovelOcupadoEvent evento) {
+        log.info("Kafka: Recebida desocupação do imóvel ID {}", evento.imovelId());
+        cadastrarImovelUseCase.alterarDisponibilidade(evento.imovelId(), true);
+    }
 }

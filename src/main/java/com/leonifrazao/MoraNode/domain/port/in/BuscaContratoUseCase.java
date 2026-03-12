@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface BuscaContratoUseCase {
     List<ContratoDomain> buscar();
+    ContratoDomain buscarPorId(Long id);
+    List<ContratoDomain> buscarPorImovelId(Long id);
 }

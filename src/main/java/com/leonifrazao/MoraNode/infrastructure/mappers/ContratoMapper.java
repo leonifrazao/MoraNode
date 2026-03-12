@@ -13,7 +13,6 @@ public class ContratoMapper {
                 entity.getValorAcordado(),
                 entity.getDataInicio(),
                 entity.getDataFim(),
-                entity.isPodeRenovar(),
                 entity.getTaxaJurosMensal(),
                 entity.getTipo(),
                 entity.getStatusContrato()

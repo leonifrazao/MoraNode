@@ -37,7 +37,7 @@ public record ContratoRequest(
         @NotNull(message = "O tipo do contrato é obrigatório")
         TipoContrato tipo,
 
-        @NotNull(message = "O status do contrato é obrigatório")
+        @NotNull(message = "O statusContrato do contrato é obrigatório")
         StatusContrato statusContrato
 ) {
     public ContratoDomain toDomain() {
@@ -50,7 +50,6 @@ public record ContratoRequest(
                 this.valorAcordado,
                 this.dataInicio,
                 this.dataFim,
-                this.podeRenovar,
                 this.taxaJurosMensal,
                 this.tipo,
                 this.statusContrato

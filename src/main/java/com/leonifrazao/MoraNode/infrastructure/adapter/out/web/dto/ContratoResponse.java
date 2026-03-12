@@ -14,7 +14,7 @@ public record ContratoResponse(
         BigDecimal valorAcordado,
         LocalDate dataInicio,
         LocalDate dataFim,
-        StatusContrato status,
+        StatusContrato statusContrato,
         TipoContrato tipo,
         boolean podeRenovar
 ) {

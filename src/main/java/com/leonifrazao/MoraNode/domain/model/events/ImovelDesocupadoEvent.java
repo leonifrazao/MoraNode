@@ -1,4 +1,11 @@
 package com.leonifrazao.MoraNode.domain.model.events;
 
-public class ImovelDesocupadoEvent {
+import java.io.Serializable;
+
+public record ImovelDesocupadoEvent(
+        Long imovelId,
+        Long contratoId,
+        String tipoContrato
+) implements Serializable {
 }
+

@@ -11,8 +11,8 @@ import org.springframework.context.annotation.Configuration;
 public class BeanConfiguration {
 
     @Bean
-    public DeletaImovelService deletaImovelService(ImovelRepositoryPort repositoryPort) {
-        return new DeletaImovelService(repositoryPort);
+    public DeletaImovelService deletaImovelService(ImovelRepositoryPort repositoryPort, ContratoRepositoryPort contratoRepositoryPort) {
+        return new DeletaImovelService(repositoryPort, contratoRepositoryPort);
     }
 
     @Bean

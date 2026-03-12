@@ -28,7 +28,7 @@ public class ContratoDomain {
     private TipoContrato tipo;
 
     public ContratoDomain(Long id, Long imovelId, String nomeDono, String nomeInquilino, BigDecimal valorAcordado,
-                          LocalDate dataInicio, LocalDate dataFim, boolean podeRenovar, BigDecimal taxaJurosMensal, TipoContrato tipo, StatusContrato status) {
+                          LocalDate dataInicio, LocalDate dataFim, BigDecimal taxaJurosMensal, TipoContrato tipo, StatusContrato status) {
         this.setId(id);
         this.setImovelId(imovelId);
         this.setTipo(tipo);
@@ -40,7 +40,7 @@ public class ContratoDomain {
         this.setDataInicio(dataInicio);
         this.setDataFim(dataFim);
         this.setTaxaJurosMensal(taxaJurosMensal);
-        this.setPodeRenovar(podeRenovar);
+        this.setPodeRenovar();
     }
 
     private void validateNotBlank(String value, String fieldName) {
@@ -96,18 +96,18 @@ public class ContratoDomain {
         }
     }
 
-    public void setPodeRenovar(boolean podeRenovar) {
-        validarSePodeTerRenovacao();
-        this.podeRenovar = podeRenovar;
+    public void setPodeRenovar() {
+        this.podeRenovar = validarSePodeTerRenovacao();
     }
 
-    private void validarSePodeTerRenovacao() {
+    private boolean validarSePodeTerRenovacao() {
         if (this.statusContrato != StatusContrato.ATIVO) {
-            throw new IllegalStateException("Contrato não está ATIVO.");
+            return false;
         }
         if (this.tipo != TipoContrato.ALUGUEL) {
-            throw new IllegalStateException("Apenas contratos de ALUGUEL podem ser renovados.");
+            return false;
         }
+        return true;
     }
 
 

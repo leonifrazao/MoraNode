@@ -88,6 +88,34 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
     }
 
+    @ExceptionHandler(ImovelComContratoAtivo.class)
+    public ResponseEntity<ErrorResponse> handleImovelComContrato(ImovelComContratoAtivo ex, HttpServletRequest request) {
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                "Não foi possivel deletar o imovel.",
+                "Imovel possui contratos ativos.",
+                request.getRequestURI()
+
+        );
+        return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(RuntimeException.class)
+    public ResponseEntity<ErrorResponse> handleRuntimeException(RuntimeException ex, HttpServletRequest request) {
+        ex.printStackTrace();
+
+        ErrorResponse error = new ErrorResponse(
+                LocalDateTime.now(),
+                HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                "Erro Interno no Servidor",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+
     @ExceptionHandler(ImovelJaOcupadoException.class)
     public ResponseEntity<ErrorResponse> handleImovelOcupado(ImovelJaOcupadoException ex, HttpServletRequest request) {
         ErrorResponse error = new ErrorResponse(
