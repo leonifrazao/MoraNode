@@ -126,7 +126,7 @@ export function Contratos() {
             try {
                 await contratoService.atualizarStatus(id, "CANCELADO");
                 carregarDados();
-            } catch (error) {
+            } catch (_error) {
                 alert("Erro ao atualizar status no servidor.");
             }
         }
