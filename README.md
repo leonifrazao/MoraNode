@@ -11,7 +11,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/leonifrazao/MoraNode">
-    <img src="web/src/assets/moranodelogo.png" alt="Logo" width="100" height="auto">
+    <img src="docs/logo.png" alt="Logo" width="100" height="auto">
   </a>
 
   <h3 align="center">MoraNode Engine</h3>
@@ -180,7 +180,7 @@ A single command boots up the entire infrastructure (PostgreSQL, Zookeeper, Kafk
    ```
 2. Set environment variables in `.env` (default values already included)
    ```env
-   DB_PASSWORD=S1splatin@
+   DB_PASSWORD=password
    DB_USER=postgres
    DB_NAME=moranode_db
    ```

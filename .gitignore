@@ -5,6 +5,10 @@ target/
 !**/src/test/**/target/
 .env
 *.logs
+web/dist
+web/node_modules
+bun.lock
+pnpm-lock.yaml
 
 ### STS ###
 .apt_generated
