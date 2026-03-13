@@ -51,6 +51,7 @@
       </ul>
     </li>
     <li><a href="#project-structure">Project Structure</a></li>
+    <li><a href="#tests">Tests</a></li>
     <li><a href="#api-endpoints">API Endpoints</a></li>
     <li><a href="#roadmap">Roadmap</a></li>
     <li><a href="#contributing">Contributing</a></li>
@@ -295,6 +296,28 @@ MoraNode/
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+## Tests
+
+The project includes **45 unit tests** covering domain models and use case services. Tests follow the hexagonal architecture pattern — use case services are tested with mocked ports, and domain models are tested directly without any mocks.
+
+| Test Class | Layer | Tests |
+|---|---|---|
+| `CadastrarContratoServiceTest` | Use Case | 8 |
+| `CadastrarImovelServiceTest` | Use Case | 6 |
+| `BuscaContratoServiceTest` | Use Case | 4 |
+| `BuscaImovelServiceTest` | Use Case | 3 |
+| `DeletaImovelServiceTest` | Use Case | 2 |
+| `ValidaEstadoContratoServiceTest` | Use Case | 2 |
+| `ContratoDomainTest` | Domain Model | 10 |
+| `ImovelDomainTest` | Domain Model | 9 |
+
+Run the tests:
+```sh
+./mvnw clean test
+```
+
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
 ## API Endpoints
 
 ### Properties `/imoveis`
@@ -331,7 +354,7 @@ MoraNode/
 - [ ] Redis caching for property listing endpoints
 - [ ] Clients page
 - [ ] Authentication and authorization (Spring Security)
-- [ ] Unit and integration tests
+- [x] Unit tests (45 tests — domain models + use case services)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 

@@ -1,4 +1,4 @@
-name: CI - Build & Verify
+name: CI - Build & Test
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
   # Backend — Java 21 / Spring Boot / Maven
   # ──────────────────────────────────────────────
   backend:
-    name: Backend — Build
+    name: Backend — Build & Test
     runs-on: ubuntu-latest
 
     steps:
@@ -30,8 +30,8 @@ jobs:
       - name: Make Maven wrapper executable
         run: chmod +x ./mvnw
 
-      - name: Build (skip tests)
-        run: ./mvnw clean package -DskipTests --batch-mode --no-transfer-progress
+      - name: Build & run tests
+        run: ./mvnw clean verify --batch-mode --no-transfer-progress
 
   # ──────────────────────────────────────────────
   # Frontend — React / Vite / TypeScript / Bun

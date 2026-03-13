@@ -1,7 +1,7 @@
 package com.leonifrazao.MoraNode.tests;
 
+import com.leonifrazao.MoraNode.domain.port.out.ContratoRepositoryPort;
 import com.leonifrazao.MoraNode.domain.port.out.ImovelRepositoryPort;
-import com.leonifrazao.MoraNode.domain.port.in.ValidaEstadoContratoUseCase;
 import com.leonifrazao.MoraNode.domain.usecase.DeletaImovelService;
 import com.leonifrazao.MoraNode.infrastructure.exceptions.ImovelComContratoAtivo;
 import org.junit.jupiter.api.Test;
@@ -17,10 +17,10 @@ import static org.mockito.Mockito.*;
 class DeletaImovelServiceTest {
 
     @Mock
-    private ImovelRepositoryPort imovelRepositoryPort;
+    private ImovelRepositoryPort repositoryPort;
 
     @Mock
-    private ValidaEstadoContratoUseCase validaEstadoContratoUseCase;
+    private ContratoRepositoryPort contratoRepositoryPort;
 
     @InjectMocks
     private DeletaImovelService service;
@@ -28,20 +28,20 @@ class DeletaImovelServiceTest {
     @Test
     void deveLancarExcecaoQuandoImovelTiverContratoAtivo() {
         Long id = 1L;
-        when(validaEstadoContratoUseCase.existeContratoAtivoParaImovel(id)).thenReturn(true);
+        when(contratoRepositoryPort.existeContratoAtivoParaImovel(id)).thenReturn(true);
 
         assertThrows(ImovelComContratoAtivo.class, () -> service.deletar(id));
 
-        verify(imovelRepositoryPort, never()).deletar(id);
+        verify(repositoryPort, never()).deletar(id);
     }
 
     @Test
     void deveDeletarComSucessoQuandoNaoHouverContratoAtivo() {
         Long id = 1L;
-        when(validaEstadoContratoUseCase.existeContratoAtivoParaImovel(id)).thenReturn(false);
+        when(contratoRepositoryPort.existeContratoAtivoParaImovel(id)).thenReturn(false);
 
         service.deletar(id);
 
-        verify(imovelRepositoryPort, times(1)).deletar(id);
+        verify(repositoryPort, times(1)).deletar(id);
     }
 }
