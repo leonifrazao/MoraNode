@@ -20,43 +20,25 @@ jobs:
           username: ${{ secrets.ACR_USERNAME }}
           password: ${{ secrets.ACR_PASSWORD }}
 
-      - name: Build and push backend image
+      - name: Build and push combined image
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: moranodeacr.azurecr.io/moranode-backend:latest
-
-      - name: Build and push frontend image
-        uses: docker/build-push-action@v5
-        with:
-          context: ./web
-          file: ./web/dockerfile
-          push: true
-          tags: moranodeacr.azurecr.io/moranode-frontend:latest
+          tags: moranodeacr.azurecr.io/moranode:latest
 
       - name: Azure Login
         uses: azure/login@v1
         with:
           creds: ${{ secrets.AZURE_CREDENTIALS }}
 
-      - name: Deploy backend to Container Apps
+      - name: Deploy to Container Apps
         uses: azure/container-apps-deploy-action@v1
         with:
           resourceGroup: moranode-rg
           containerAppEnvironment: moranode-env
-          containerAppName: moranode-backend
-          imageToDeploy: moranodeacr.azurecr.io/moranode-backend:latest
+          containerAppName: moranode
+          imageToDeploy: moranodeacr.azurecr.io/moranode:latest
           targetPort: 8080
-          ingress: external
-
-      - name: Deploy frontend to Container Apps
-        uses: azure/container-apps-deploy-action@v1
-        with:
-          resourceGroup: moranode-rg
-          containerAppEnvironment: moranode-env
-          containerAppName: moranode-frontend
-          imageToDeploy: moranodeacr.azurecr.io/moranode-frontend:latest
-          targetPort: 80
           ingress: external
