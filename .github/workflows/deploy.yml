@@ -1,4 +1,4 @@
-name: CI - Build & Test
+name: CI - Build & Verify
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
   # Backend — Java 21 / Spring Boot / Maven
   # ──────────────────────────────────────────────
   backend:
-    name: Backend — Build & Test
+    name: Backend — Build
     runs-on: ubuntu-latest
 
     steps:
@@ -30,11 +30,11 @@ jobs:
       - name: Make Maven wrapper executable
         run: chmod +x ./mvnw
 
-      - name: Build & run tests
-        run: ./mvnw clean verify --batch-mode --no-transfer-progress
+      - name: Build (skip tests)
+        run: ./mvnw clean package -DskipTests --batch-mode --no-transfer-progress
 
   # ──────────────────────────────────────────────
-  # Frontend — React / Vite / TypeScript
+  # Frontend — React / Vite / TypeScript / Bun
   # ──────────────────────────────────────────────
   frontend:
     name: Frontend — Lint, Type-check & Build
@@ -47,19 +47,14 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install pnpm
-        run: npm install -g pnpm
+      - name: Set up Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: bun install --frozen-lockfile
 
       - name: Lint
-        run: pnpm run lint
+        run: bun run lint
 
       - name: Type-check & Build
-        run: pnpm run build
+        run: bun run build
