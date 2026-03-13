@@ -72,11 +72,11 @@ export function NovoContratoModal({ onSucesso }: Props) {
                     setImoveis(disponiveis);
                 })
                 .catch((err) => {
-                    toast.error(err); // ✅ Usa o tratamento de erro
-                })
-                .finally(() => setLoadingImoveis(false));
-        }
-    }, [open]);
+                toast.error(err); // ✅ Usa o tratamento de erro
+            })
+            .finally(() => setLoadingImoveis(false));
+    }
+}, [open, toast]);
 
     const handleImovelChange = (imovelId: string) => {
         const id = Number(imovelId);

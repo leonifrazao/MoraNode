@@ -25,6 +25,7 @@ export function Register() {
             setTimeout(() => {
                 navigate('/login');
             }, 3000);
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             setError(err.response?.data?.message || err.response?.data?.error || 'Erro ao realizar cadastro. Tente outro email.');
         } finally {

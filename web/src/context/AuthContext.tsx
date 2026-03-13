@@ -21,7 +21,7 @@ function parseJwt(token: string): JwtPayload | null {
             return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
         }).join(''));
         return JSON.parse(jsonPayload);
-    } catch (e) {
+    } catch {
         return null;
     }
 }
@@ -71,6 +71,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function useAuth() {
     const context = useContext(AuthContext);
     if (context === undefined) {

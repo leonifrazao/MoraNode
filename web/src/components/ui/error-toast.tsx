@@ -7,6 +7,7 @@ interface ErrorToastProps {
     status?: number;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export function getErrorIcon(status?: number) {
     if (!status) return AlertCircle;
     if (status >= 500) return XCircle;

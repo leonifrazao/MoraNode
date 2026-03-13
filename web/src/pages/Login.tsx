@@ -20,6 +20,7 @@ export function Login() {
         try {
             await login({ email, senha });
             navigate('/');
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         } catch (err: any) {
             const serverMessage = err.response?.data?.message;
             if (serverMessage && serverMessage !== 'Bad credentials') {
