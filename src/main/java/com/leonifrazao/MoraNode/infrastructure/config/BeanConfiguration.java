@@ -16,8 +16,8 @@ public class BeanConfiguration {
     }
 
     @Bean
-    public CadastrarImovelService cadastrarImovelService(ImovelRepositoryPort repositoryPort) {
-        return new CadastrarImovelService(repositoryPort);
+    public CadastrarImovelService cadastrarImovelService(ImovelRepositoryPort repositoryPort, ContratoRepositoryPort contratoRepositoryPort) {
+        return new CadastrarImovelService(repositoryPort, contratoRepositoryPort);
     }
 
     @Bean
