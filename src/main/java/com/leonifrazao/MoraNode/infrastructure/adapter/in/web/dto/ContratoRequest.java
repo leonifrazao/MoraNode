@@ -13,9 +13,11 @@ public record ContratoRequest(
         Long imovelId,
 
         @NotBlank(message = "O nome do dono é obrigatório")
+        @Size(max = 255, message = "O nome do dono deve ter no máximo 255 caracteres")
         String nomeDono,
 
         @NotBlank(message = "O nome do inquilino é obrigatório")
+        @Size(max = 255, message = "O nome do inquilino deve ter no máximo 255 caracteres")
         String nomeInquilino,
 
         @NotNull(message = "O valor acordado é obrigatório")

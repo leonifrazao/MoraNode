@@ -17,6 +17,8 @@ public class ImovelEntity {
     private Long id;
 
     private int valor;
+
+    @Column(length = 500)
     private String endereco;
     private int metrosQuadrados;
     private boolean disponivel;

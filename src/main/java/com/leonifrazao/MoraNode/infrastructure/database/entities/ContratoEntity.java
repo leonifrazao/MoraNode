@@ -20,7 +20,11 @@ public class ContratoEntity {
     private Long id;
 
     private Long imovelId;
+
+    @Column(length = 255)
     private String nomeDono;
+
+    @Column(length = 255)
     private String nomeInquilino;
 
     @Column(precision = 19, scale = 2) // Padrão financeiro
