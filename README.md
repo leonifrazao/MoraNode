@@ -67,6 +67,32 @@ Data consistency between Properties and Contracts is maintained in an **event-dr
 
 The frontend is a SPA built with React 19 and Vite, served in production via Nginx with a reverse proxy to the API. The entire stack (backend, frontend, database, kafka) boots up with a single `docker-compose up` command.
 
+### Screenshots
+
+<details>
+  <summary>Dashboard</summary>
+  <br />
+  <img src="docs/dashboard.png" alt="Dashboard" />
+</details>
+
+<details>
+  <summary>Property Management</summary>
+  <br />
+  <img src="docs/imoveis.png" alt="Properties" />
+</details>
+
+<details>
+  <summary>Contract Management</summary>
+  <br />
+  <img src="docs/contratos.png" alt="Contracts" />
+</details>
+
+<details>
+  <summary>New Property Modal</summary>
+  <br />
+  <img src="docs/novoimovel.png" alt="New Property" />
+</details>
+
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 ### Architecture
