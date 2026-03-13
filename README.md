@@ -229,17 +229,35 @@ A single command boots up the entire infrastructure (PostgreSQL, Zookeeper, Kafk
    docker-compose up -d db zookeeper kafka kafdrop
    ```
 
-2. Start the Spring Boot backend
+2. Export the required environment variables (password must match the `DB_PASSWORD` value in your `.env` file)
+   ```sh
+   export SPRING_DATASOURCE_PASSWORD=password
+   ```
+
+3. Start the Spring Boot backend
    ```sh
    ./mvnw spring-boot:run
    ```
 
-3. In another terminal, start the frontend (port 5173 in dev mode)
+4. In another terminal, start the frontend (port 5173 in dev mode)
    ```sh
    cd web
    npm install
    npm run dev
    ```
+
+### Deploying to DigitalOcean (with Supabase PostgreSQL)
+
+When deploying to DigitalOcean App Platform with Supabase as the database, set the following environment variables in your App Platform settings. The `sslmode=require` parameter in the URL is required for Supabase connections.
+
+| Variable | Example Value |
+|---|---|
+| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://db.<project-ref>.supabase.co:5432/postgres?sslmode=require` |
+| `SPRING_DATASOURCE_USERNAME` | `postgres` |
+| `SPRING_DATASOURCE_PASSWORD` | `your_supabase_password` |
+| `SPRING_KAFKA_BOOTSTRAP_SERVERS` | `your-kafka-broker:9092` |
+
+> **Note:** Never commit credentials to the repository. Set all sensitive values exclusively through the DigitalOcean App Platform environment variable settings.
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
