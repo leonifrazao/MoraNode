@@ -1,0 +1,15 @@
+[data-radix-popper-content-wrapper] {
+    z-index: 200 !important;
+}
+
+/* Select Content styling */
+[role="listbox"] {
+    background-color: hsl(var(--card)) !important;
+    border-color: hsl(var(--border)) !important;
+}
+
+/* Select Item hover */
+[role="option"]:hover,
+[role="option"]:focus {
+    background-color: rgba(255, 255, 255, 0.1) !important;
+}
