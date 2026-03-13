@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/imoveis")
 @RequiredArgsConstructor
+@CrossOrigin(origins = {"http://localhost:5173", "http://localhost:3000"})
 public class ImovelController {
 
     private final CadastrarImovelUseCase imovelService;
