@@ -35,7 +35,7 @@ export function Login() {
 
     return (
         <div className="min-h-screen flex items-center justify-center bg-background text-foreground relative overflow-hidden">
-            <div className="w-full max-w-md p-8 bg-card border border-border shadow-2xl rounded-2xl relative z-10 animate-fade-in-up">
+            <div className="w-full max-w-md p-6 sm:p-8 bg-card border border-border shadow-2xl rounded-2xl relative z-10 animate-fade-in-up">
                 <div className="text-center mb-8">
                     <img src={logo} alt="MoraNode" className="h-20 mx-auto object-contain mb-4" />
                     <h2 className="text-3xl font-bold tracking-tight">Bem-vindo de volta</h2>

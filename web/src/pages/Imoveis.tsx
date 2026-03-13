@@ -196,7 +196,7 @@ export function Imoveis() {
                 {/* Header */}
                 <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-white">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
                             Gestão de Imóveis
                         </h1>
                         <p className="text-muted-foreground font-medium">
@@ -291,11 +291,11 @@ export function Imoveis() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="rounded-lg border border-border/40 overflow-hidden">
-                            <Table>
+                        <div className="rounded-lg border border-border/40 overflow-x-auto">
+                            <Table className="min-w-[600px]">
                                 <TableHeader>
                                     <TableRow className="hover:bg-transparent border-border/60 bg-muted/30">
-                                        <TableHead className="font-semibold py-4 text-gray-400">ID</TableHead>
+                                        <TableHead className="font-semibold py-4 text-gray-400 hidden md:table-cell">ID</TableHead>
                                         <TableHead className="font-semibold text-gray-400">Endereço</TableHead>
                                         <TableHead className="font-semibold text-gray-400">Status</TableHead>
                                         <TableHead className="font-semibold text-gray-400">Área</TableHead>
@@ -335,7 +335,7 @@ export function Imoveis() {
                                                 key={imovel.id}
                                                 className="border-border/40 hover:bg-muted/20 transition-colors"
                                             >
-                                                <TableCell className="font-mono text-muted-foreground">
+                                                <TableCell className="font-mono text-muted-foreground hidden md:table-cell">
                                                     #{imovel.id}
                                                 </TableCell>
                                                 <TableCell className="font-medium text-white max-w-[300px] truncate">

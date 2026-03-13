@@ -247,7 +247,7 @@ export function NovoContratoModal({ onSucesso }: Props) {
                             Partes Envolvidas
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Proprietário <span className="text-red-400">*</span></Label>
                                 <Input
@@ -281,7 +281,7 @@ export function NovoContratoModal({ onSucesso }: Props) {
                             Condições Financeiras
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Valor Acordado <span className="text-red-400">*</span></Label>
                                 <div className="relative">
@@ -329,7 +329,7 @@ export function NovoContratoModal({ onSucesso }: Props) {
                             Detalhes do Contrato
                         </div>
 
-                        <div className="grid grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label>Data de Início <span className="text-red-400">*</span></Label>
                                 <Input

@@ -145,7 +145,7 @@ export function Contratos() {
                 {/* Header */}
                 <header className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                     <div>
-                        <h1 className="text-3xl font-bold tracking-tight text-white">
+                        <h1 className="text-2xl md:text-3xl font-bold tracking-tight text-white">
                             Gestão de Contratos
                         </h1>
                         <p className="text-muted-foreground font-medium">
@@ -243,17 +243,17 @@ export function Contratos() {
                         </div>
                     </CardHeader>
                     <CardContent>
-                        <div className="rounded-lg border border-border/40 overflow-hidden">
-                            <Table>
+                        <div className="rounded-lg border border-border/40 overflow-x-auto">
+                            <Table className="min-w-[700px]">
                                 <TableHeader>
                                     <TableRow className="hover:bg-transparent border-border/60 bg-muted/30">
                                         <TableHead className="font-semibold py-4 text-gray-400">
                                             Inquilino
                                         </TableHead>
-                                        <TableHead className="font-semibold text-gray-400">
+                                        <TableHead className="font-semibold text-gray-400 hidden md:table-cell">
                                             Imóvel
                                         </TableHead>
-                                        <TableHead className="font-semibold text-gray-400">
+                                        <TableHead className="font-semibold text-gray-400 hidden md:table-cell">
                                             Tipo
                                         </TableHead>
                                         <TableHead className="font-semibold text-gray-400">
@@ -309,10 +309,10 @@ export function Contratos() {
                                                     <TableCell className="font-medium text-white">
                                                         {c.nomeInquilino}
                                                     </TableCell>
-                                                    <TableCell className="text-muted-foreground font-mono">
+                                                    <TableCell className="text-muted-foreground font-mono hidden md:table-cell">
                                                         #{c.imovelId}
                                                     </TableCell>
-                                                    <TableCell>
+                                                    <TableCell className="hidden md:table-cell">
                                                         <Badge variant="outline" className="text-xs font-medium">
                                                             {c.tipo}
                                                         </Badge>
