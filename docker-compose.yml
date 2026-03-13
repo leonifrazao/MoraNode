@@ -72,9 +72,9 @@ services:
     ports:
       - "8080:8080"
     environment:
-        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME:-moranode_db}
-        SPRING_DATASOURCE_USERNAME: ${DB_USER:-moranode}
-        SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-moranode123}
+        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME}
+        SPRING_DATASOURCE_USERNAME: ${DB_USER}
+        SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD}
         SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
   web:
     build:
