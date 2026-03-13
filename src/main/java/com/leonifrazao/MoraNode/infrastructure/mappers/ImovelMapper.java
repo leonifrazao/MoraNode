@@ -14,6 +14,7 @@ public class ImovelMapper {
         entity.setEndereco(domain.getEndereco());
         entity.setMetrosQuadrados(domain.getMetrosQuadrados());
         entity.setDisponivel(domain.isDisponivel());
+        entity.setUsuarioId(domain.getUsuarioId());
         return entity;
     }
 
@@ -21,6 +22,7 @@ public class ImovelMapper {
         if (entidade == null) return null;
         return new ImovelDomain(
                 entidade.getId(),
+                entidade.getUsuarioId(),
                 entidade.getValor(),
                 entidade.isDisponivel(),
                 entidade.getMetrosQuadrados(),

@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.leonifrazao.MoraNode.infrastructure.security.UsuarioDetalhe;
 
 import java.util.List;
 
@@ -22,29 +24,29 @@ public class ContratoController {
     private final BuscaContratoUseCase buscaContratoUseCase;
 
     @PostMapping
-    public ResponseEntity<Void> criar(@RequestBody @Valid ContratoRequest request) {
-        contratoCadastroService.cadastrar(request.toDomain());
+    public ResponseEntity<Void> criar(@RequestBody @Valid ContratoRequest request, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        contratoCadastroService.cadastrar(request.toDomain(), usuario.getId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 
     @GetMapping
-    public ResponseEntity<List<ContratoResponse>> buscar() {
-        List<ContratoResponse> contratos = buscaContratoUseCase.buscar().stream()
+    public ResponseEntity<List<ContratoResponse>> buscar(@AuthenticationPrincipal UsuarioDetalhe usuario) {
+        List<ContratoResponse> contratos = buscaContratoUseCase.buscar(usuario.getId()).stream()
                 .map(ContratoResponse::fromDomain)
                 .toList();
         return ResponseEntity.ok(contratos);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ContratoResponse> buscarPorId(@PathVariable Long id) {
-        ContratoDomain imovel = buscaContratoUseCase.buscarPorId(id);
+    public ResponseEntity<ContratoResponse> buscarPorId(@PathVariable Long id, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        ContratoDomain imovel = buscaContratoUseCase.buscarPorId(id, usuario.getId());
         ContratoResponse resposta = ContratoResponse.fromDomain(imovel);
         return ResponseEntity.ok(resposta);
     }
 
     @PatchMapping("/{id}/status")
-    public ResponseEntity<Void> atualizarStatus(@PathVariable Long id, @RequestBody StatusRequest request) {
-        contratoCadastroService.atualizarStatus(id, request.statusContrato());
+    public ResponseEntity<Void> atualizarStatus(@PathVariable Long id, @RequestBody StatusRequest request, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        contratoCadastroService.atualizarStatus(id, request.statusContrato(), usuario.getId());
         return ResponseEntity.noContent().build();
     }
 }

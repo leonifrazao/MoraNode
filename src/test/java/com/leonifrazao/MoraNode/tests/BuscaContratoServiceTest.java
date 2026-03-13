@@ -37,42 +37,46 @@ class BuscaContratoServiceTest {
 
     @Test
     void deveRetornarTodosContratos() {
+        Long usuarioId = 100L;
         List<ContratoDomain> contratos = List.of(criarContrato(1L, 10L), criarContrato(2L, 20L));
-        when(repositoryPort.buscar()).thenReturn(contratos);
+        when(repositoryPort.buscar(usuarioId)).thenReturn(contratos);
 
-        List<ContratoDomain> resultado = service.buscar();
+        List<ContratoDomain> resultado = service.buscar(usuarioId);
 
         assertEquals(2, resultado.size());
-        verify(repositoryPort).buscar();
+        verify(repositoryPort).buscar(usuarioId);
     }
 
     @Test
     void deveBuscarContratoPorId() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(1L, 10L);
-        when(repositoryPort.buscarPorId(1L)).thenReturn(contrato);
+        when(repositoryPort.buscarPorId(1L, usuarioId)).thenReturn(contrato);
 
-        ContratoDomain resultado = service.buscarPorId(1L);
+        ContratoDomain resultado = service.buscarPorId(1L, usuarioId);
 
         assertEquals(contrato, resultado);
-        verify(repositoryPort).buscarPorId(1L);
+        verify(repositoryPort).buscarPorId(1L, usuarioId);
     }
 
     @Test
     void deveBuscarContratosPorImovelId() {
+        Long usuarioId = 100L;
         List<ContratoDomain> contratos = List.of(criarContrato(1L, 10L), criarContrato(2L, 10L));
-        when(repositoryPort.buscarPorImovelId(10L)).thenReturn(contratos);
+        when(repositoryPort.buscarPorImovelId(10L, usuarioId)).thenReturn(contratos);
 
-        List<ContratoDomain> resultado = service.buscarPorImovelId(10L);
+        List<ContratoDomain> resultado = service.buscarPorImovelId(10L, usuarioId);
 
         assertEquals(2, resultado.size());
-        verify(repositoryPort).buscarPorImovelId(10L);
+        verify(repositoryPort).buscarPorImovelId(10L, usuarioId);
     }
 
     @Test
     void deveRetornarListaVaziaQuandoNaoExistemContratos() {
-        when(repositoryPort.buscar()).thenReturn(List.of());
+        Long usuarioId = 100L;
+        when(repositoryPort.buscar(usuarioId)).thenReturn(List.of());
 
-        List<ContratoDomain> resultado = service.buscar();
+        List<ContratoDomain> resultado = service.buscar(usuarioId);
 
         assertTrue(resultado.isEmpty());
     }

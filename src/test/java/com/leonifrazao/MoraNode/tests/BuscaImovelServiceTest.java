@@ -25,34 +25,37 @@ class BuscaImovelServiceTest {
 
     @Test
     void deveBuscarImovelPorId() {
+        Long usuarioId = 100L;
         ImovelDomain imovel = new ImovelDomain(1000, "Rua A", 50, true);
-        when(repositoryPort.buscarPorID(1L)).thenReturn(imovel);
+        when(repositoryPort.buscarPorID(1L, usuarioId)).thenReturn(imovel);
 
-        ImovelDomain resultado = service.buscaID(1L);
+        ImovelDomain resultado = service.buscaID(1L, usuarioId);
 
         assertEquals(imovel, resultado);
-        verify(repositoryPort).buscarPorID(1L);
+        verify(repositoryPort).buscarPorID(1L, usuarioId);
     }
 
     @Test
     void deveRetornarListaDeImoveis() {
+        Long usuarioId = 100L;
         List<ImovelDomain> imoveis = List.of(
                 new ImovelDomain(1000, "Rua A", 50, true),
                 new ImovelDomain(2000, "Rua B", 80, false)
         );
-        when(repositoryPort.buscar()).thenReturn(imoveis);
+        when(repositoryPort.buscar(usuarioId)).thenReturn(imoveis);
 
-        List<ImovelDomain> resultado = service.buscar();
+        List<ImovelDomain> resultado = service.buscar(usuarioId);
 
         assertEquals(2, resultado.size());
-        verify(repositoryPort).buscar();
+        verify(repositoryPort).buscar(usuarioId);
     }
 
     @Test
     void deveRetornarListaVaziaQuandoNaoExistemImoveis() {
-        when(repositoryPort.buscar()).thenReturn(List.of());
+        Long usuarioId = 100L;
+        when(repositoryPort.buscar(usuarioId)).thenReturn(List.of());
 
-        List<ImovelDomain> resultado = service.buscar();
+        List<ImovelDomain> resultado = service.buscar(usuarioId);
 
         assertTrue(resultado.isEmpty());
     }

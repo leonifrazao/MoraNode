@@ -51,11 +51,12 @@ class CadastrarContratoServiceTest {
 
     @Test
     void deveCadastrarContratoAtivoEDispararEvento() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.ATIVO, TipoContrato.ALUGUEL);
         ImovelDomain imovel = new ImovelDomain(1000, "Rua A", 50, true);
-        when(imovelRepositoryPort.buscarPorID(10L)).thenReturn(imovel);
+        when(imovelRepositoryPort.buscarPorID(10L, usuarioId)).thenReturn(imovel);
 
-        service.cadastrar(contrato);
+        service.cadastrar(contrato, usuarioId);
 
         verify(repositoryPort).salvar(contrato);
         verify(notificacaoImovelPort).avisarImovelOcupado(any(ImovelOcupadoEvent.class));
@@ -63,11 +64,12 @@ class CadastrarContratoServiceTest {
 
     @Test
     void deveCadastrarContratoFinalizadoSemDispararEvento() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.FINALIZADO, TipoContrato.VENDA);
         ImovelDomain imovel = new ImovelDomain(1000, "Rua A", 50, true);
-        when(imovelRepositoryPort.buscarPorID(10L)).thenReturn(imovel);
+        when(imovelRepositoryPort.buscarPorID(10L, usuarioId)).thenReturn(imovel);
 
-        service.cadastrar(contrato);
+        service.cadastrar(contrato, usuarioId);
 
         verify(repositoryPort).salvar(contrato);
         verify(notificacaoImovelPort, never()).avisarImovelOcupado(any());
@@ -75,62 +77,68 @@ class CadastrarContratoServiceTest {
 
     @Test
     void deveLancarExcecaoQuandoImovelNaoExiste() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.ATIVO, TipoContrato.ALUGUEL);
-        when(imovelRepositoryPort.buscarPorID(10L)).thenThrow(new EntityNotFoundException());
+        when(imovelRepositoryPort.buscarPorID(10L, usuarioId)).thenThrow(new EntityNotFoundException());
 
-        assertThrows(SemImovelException.class, () -> service.cadastrar(contrato));
+        assertThrows(SemImovelException.class, () -> service.cadastrar(contrato, usuarioId));
     }
 
     @Test
     void deveLancarExcecaoQuandoImovelJaOcupado() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.ATIVO, TipoContrato.ALUGUEL);
         ImovelDomain imovel = new ImovelDomain(1000, "Rua A", 50, false);
-        when(imovelRepositoryPort.buscarPorID(10L)).thenReturn(imovel);
+        when(imovelRepositoryPort.buscarPorID(10L, usuarioId)).thenReturn(imovel);
 
-        assertThrows(ImovelJaOcupadoException.class, () -> service.cadastrar(contrato));
+        assertThrows(ImovelJaOcupadoException.class, () -> service.cadastrar(contrato, usuarioId));
     }
 
     @Test
     void deveDispararEventoDesocupacaoAoCancelarContrato() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.ATIVO, TipoContrato.ALUGUEL);
-        when(repositoryPort.buscarPorId(1L)).thenReturn(contrato);
+        when(repositoryPort.buscarPorId(1L, usuarioId)).thenReturn(contrato);
 
-        service.atualizarStatus(1L, StatusContrato.CANCELADO);
+        service.atualizarStatus(1L, StatusContrato.CANCELADO, usuarioId);
 
-        verify(repositoryPort).atualizarStatus(1L, StatusContrato.CANCELADO);
+        verify(repositoryPort).atualizarStatus(1L, StatusContrato.CANCELADO, usuarioId);
         verify(notificacaoImovelPort).avisarImovelDesocupado(any(ImovelDesocupadoEvent.class));
     }
 
     @Test
     void deveDispararEventoDesocupacaoAoFinalizarContrato() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.ATIVO, TipoContrato.ALUGUEL);
-        when(repositoryPort.buscarPorId(1L)).thenReturn(contrato);
+        when(repositoryPort.buscarPorId(1L, usuarioId)).thenReturn(contrato);
 
-        service.atualizarStatus(1L, StatusContrato.FINALIZADO);
+        service.atualizarStatus(1L, StatusContrato.FINALIZADO, usuarioId);
 
-        verify(repositoryPort).atualizarStatus(1L, StatusContrato.FINALIZADO);
+        verify(repositoryPort).atualizarStatus(1L, StatusContrato.FINALIZADO, usuarioId);
         verify(notificacaoImovelPort).avisarImovelDesocupado(any(ImovelDesocupadoEvent.class));
     }
 
     @Test
     void deveDispararEventoOcupacaoAoReativarContrato() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.CANCELADO, TipoContrato.ALUGUEL);
-        when(repositoryPort.buscarPorId(1L)).thenReturn(contrato);
+        when(repositoryPort.buscarPorId(1L, usuarioId)).thenReturn(contrato);
 
-        service.atualizarStatus(1L, StatusContrato.ATIVO);
+        service.atualizarStatus(1L, StatusContrato.ATIVO, usuarioId);
 
-        verify(repositoryPort).atualizarStatus(1L, StatusContrato.ATIVO);
+        verify(repositoryPort).atualizarStatus(1L, StatusContrato.ATIVO, usuarioId);
         verify(notificacaoImovelPort).avisarImovelOcupado(any(ImovelOcupadoEvent.class));
     }
 
     @Test
     void deveDispararEventoOcupacaoAoColocarEmDisputa() {
+        Long usuarioId = 100L;
         ContratoDomain contrato = criarContrato(StatusContrato.ATIVO, TipoContrato.ALUGUEL);
-        when(repositoryPort.buscarPorId(1L)).thenReturn(contrato);
+        when(repositoryPort.buscarPorId(1L, usuarioId)).thenReturn(contrato);
 
-        service.atualizarStatus(1L, StatusContrato.EM_DISPUTA);
+        service.atualizarStatus(1L, StatusContrato.EM_DISPUTA, usuarioId);
 
-        verify(repositoryPort).atualizarStatus(1L, StatusContrato.EM_DISPUTA);
+        verify(repositoryPort).atualizarStatus(1L, StatusContrato.EM_DISPUTA, usuarioId);
         verify(notificacaoImovelPort).avisarImovelOcupado(any(ImovelOcupadoEvent.class));
     }
 }

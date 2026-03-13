@@ -9,6 +9,8 @@ import lombok.*;
 public class ImovelDomain {
     @Setter
     private Long id;
+    @Setter
+    private Long usuarioId;
     private int valor;
     @Setter
     private boolean disponivel;

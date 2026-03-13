@@ -5,7 +5,7 @@ import com.leonifrazao.MoraNode.infrastructure.database.entities.ContratoEntity;
 
 public class ContratoMapper {
     public static ContratoDomain toDomain(ContratoEntity entity) {
-        return new ContratoDomain(
+        ContratoDomain dominio = new ContratoDomain(
                 entity.getId(),
                 entity.getImovelId(),
                 entity.getNomeDono(),
@@ -17,12 +17,15 @@ public class ContratoMapper {
                 entity.getTipo(),
                 entity.getStatusContrato()
         );
+        dominio.setUsuarioId(entity.getUsuarioId());
+        return dominio;
     }
 
     public static ContratoEntity toEntity(ContratoDomain domain) {
-        return new ContratoEntity(
+        ContratoEntity entity = new ContratoEntity(
                 domain.getId(),
                 domain.getImovelId(),
+                domain.getUsuarioId(),
                 domain.getNomeDono(),
                 domain.getNomeInquilino(),
                 domain.getValorAcordado(),
@@ -33,5 +36,6 @@ public class ContratoMapper {
                 domain.getStatusContrato(),
                 domain.getTipo()
         );
+        return entity;
     }
 }

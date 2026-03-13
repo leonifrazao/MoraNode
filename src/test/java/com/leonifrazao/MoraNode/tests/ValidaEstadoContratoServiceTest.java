@@ -22,15 +22,17 @@ class ValidaEstadoContratoServiceTest {
 
     @Test
     void deveRetornarTrueQuandoExisteContratoAtivo() {
-        when(repositoryPort.existeContratoAtivoParaImovel(1L)).thenReturn(true);
+        Long usuarioId = 100L;
+        when(repositoryPort.existeContratoAtivoParaImovel(1L, usuarioId)).thenReturn(true);
 
-        assertTrue(service.existeContratoAtivoParaImovel(1L));
+        assertTrue(service.existeContratoAtivoParaImovel(1L, usuarioId));
     }
 
     @Test
     void deveRetornarFalseQuandoNaoExisteContratoAtivo() {
-        when(repositoryPort.existeContratoAtivoParaImovel(1L)).thenReturn(false);
+        Long usuarioId = 100L;
+        when(repositoryPort.existeContratoAtivoParaImovel(1L, usuarioId)).thenReturn(false);
 
-        assertFalse(service.existeContratoAtivoParaImovel(1L));
+        assertFalse(service.existeContratoAtivoParaImovel(1L, usuarioId));
     }
 }

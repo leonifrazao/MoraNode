@@ -7,9 +7,13 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
+import java.util.Optional;
+
 @Repository
 public interface SpringDataContratoRepository extends JpaRepository<ContratoEntity, Long> {
-    List<ContratoEntity> findByImovelId(Long imovelId);
+    List<ContratoEntity> findByUsuarioId(Long usuarioId);
+    Optional<ContratoEntity> findByIdAndUsuarioId(Long id, Long usuarioId);
+    List<ContratoEntity> findByImovelIdAndUsuarioId(Long imovelId, Long usuarioId);
 
-    boolean existsByImovelIdAndStatusContratoIn(Long imovelId, List<StatusContrato> statuses);
+    boolean existsByImovelIdAndUsuarioIdAndStatusContratoIn(Long imovelId, Long usuarioId, List<StatusContrato> statuses);
 }

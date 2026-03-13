@@ -5,7 +5,7 @@ import com.leonifrazao.MoraNode.domain.model.ContratoDomain;
 import java.util.List;
 
 public interface BuscaContratoUseCase {
-    List<ContratoDomain> buscar();
-    ContratoDomain buscarPorId(Long id);
-    List<ContratoDomain> buscarPorImovelId(Long id);
+    List<ContratoDomain> buscar(Long usuarioId);
+    ContratoDomain buscarPorId(Long id, Long usuarioId);
+    List<ContratoDomain> buscarPorImovelId(Long id, Long usuarioId);
 }

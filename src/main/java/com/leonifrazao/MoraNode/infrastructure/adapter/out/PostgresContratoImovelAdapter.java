@@ -18,8 +18,8 @@ public class PostgresContratoImovelAdapter implements ContratoRepositoryPort {
     private final SpringDataContratoRepository jpaRepository;
 
     @Override
-    public List<ContratoDomain> buscar() {
-        List<ContratoEntity> entidades = jpaRepository.findAll();
+    public List<ContratoDomain> buscar(Long usuarioId) {
+        List<ContratoEntity> entidades = jpaRepository.findByUsuarioId(usuarioId);
         return entidades.stream()
                 .map(ContratoMapper::toDomain)
                 .toList();
@@ -31,15 +31,15 @@ public class PostgresContratoImovelAdapter implements ContratoRepositoryPort {
     }
 
     @Override
-    public ContratoDomain buscarPorId(Long id){
-        ContratoEntity entidade = jpaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Contrato não encontrado com o ID: " + id));
+    public ContratoDomain buscarPorId(Long id, Long usuarioId){
+        ContratoEntity entidade = jpaRepository.findByIdAndUsuarioId(id, usuarioId)
+                .orElseThrow(() -> new RuntimeException("Contrato não encontrado ou não te pertence: " + id));
         return ContratoMapper.toDomain(entidade);
     }
 
     @Override
-    public List<ContratoDomain> buscarPorImovelId(Long imovelId) {
-        return jpaRepository.findByImovelId(imovelId)
+    public List<ContratoDomain> buscarPorImovelId(Long imovelId, Long usuarioId) {
+        return jpaRepository.findByImovelIdAndUsuarioId(imovelId, usuarioId)
                 .stream()
                 .map(ContratoMapper::toDomain)
                 .toList();
@@ -47,18 +47,18 @@ public class PostgresContratoImovelAdapter implements ContratoRepositoryPort {
     }
 
     @Override
-    public boolean existeContratoAtivoParaImovel(Long imovelId) {
+    public boolean existeContratoAtivoParaImovel(Long imovelId, Long usuarioId) {
         List<StatusContrato> statusQueTrancam = List.of(
                 StatusContrato.ATIVO,
                 StatusContrato.EM_DISPUTA
         );
 
-        return jpaRepository.existsByImovelIdAndStatusContratoIn(imovelId, statusQueTrancam);
+        return jpaRepository.existsByImovelIdAndUsuarioIdAndStatusContratoIn(imovelId, usuarioId, statusQueTrancam);
     }
 
     @Override
-    public void atualizarStatus(Long id, StatusContrato novoStatus) {
-        ContratoEntity entidade = jpaRepository.findById(id)
+    public void atualizarStatus(Long id, StatusContrato novoStatus, Long usuarioId) {
+        ContratoEntity entidade = jpaRepository.findByIdAndUsuarioId(id, usuarioId)
                 .orElseThrow(() -> new RuntimeException("Contrato não encontrado"));
 
         entidade.setStatusContrato(novoStatus);

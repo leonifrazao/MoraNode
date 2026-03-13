@@ -22,16 +22,16 @@ public class CadastrarContratoService implements CadastrarContratoUseCase {
     private final NotificacaoImovelPort notificacaoImovelPort;
     private final ImovelRepositoryPort imovelRepositoryPort;
 
-    private void verificarSeExiste(Long id) {
+    private void verificarSeExiste(Long id, Long usuarioId) {
         try {
-            ImovelDomain dominioImovel = imovelRepositoryPort.buscarPorID(id);
+            ImovelDomain dominioImovel = imovelRepositoryPort.buscarPorID(id, usuarioId);
 
             if (!dominioImovel.isDisponivel()) {
                 throw new ImovelJaOcupadoException();
             }
 
         } catch (EntityNotFoundException e) {
-            throw new SemImovelException("Imovel Não existe!", e);
+            throw new SemImovelException("Imovel Não existe ou não te pertence!", e);
         }
     }
 
@@ -39,17 +39,19 @@ public class CadastrarContratoService implements CadastrarContratoUseCase {
         var evento = new ImovelOcupadoEvent(
                 dominio.getImovelId(),
                 dominio.getId(),
-                dominio.getTipo().name()
+                dominio.getTipo().name(),
+                dominio.getUsuarioId()
         );
         notificacaoImovelPort.avisarImovelOcupado(evento);
     }
 
     @Override
     @Transactional
-    public void cadastrar(ContratoDomain dominio) {
+    public void cadastrar(ContratoDomain dominio, Long usuarioId) {
 
-        verificarSeExiste(dominio.getImovelId());
+        verificarSeExiste(dominio.getImovelId(), usuarioId);
 
+        dominio.setUsuarioId(usuarioId);
         repositoryPort.salvar(dominio);
 
         if (dominio.getStatusContrato() == StatusContrato.ATIVO ||
@@ -62,10 +64,10 @@ public class CadastrarContratoService implements CadastrarContratoUseCase {
 
     @Override
     @Transactional
-    public void atualizarStatus(Long id, StatusContrato status) {
-        ContratoDomain dominio = repositoryPort.buscarPorId(id);
+    public void atualizarStatus(Long id, StatusContrato status, Long usuarioId) {
+        ContratoDomain dominio = repositoryPort.buscarPorId(id, usuarioId);
 
-        repositoryPort.atualizarStatus(id, status);
+        repositoryPort.atualizarStatus(id, status, usuarioId);
 
 
         if (status == StatusContrato.CANCELADO ||
@@ -74,7 +76,8 @@ public class CadastrarContratoService implements CadastrarContratoUseCase {
             var evento = new ImovelDesocupadoEvent(
                     dominio.getImovelId(),
                     dominio.getId(),
-                    dominio.getTipo().name()
+                    dominio.getTipo().name(),
+                    dominio.getUsuarioId()
             );
 
             notificacaoImovelPort.avisarImovelDesocupado(evento);

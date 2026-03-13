@@ -38,9 +38,10 @@ class CadastrarImovelServiceTest {
 
     @Test
     void deveCadastrarImovelComSucesso() {
+        Long usuarioId = 100L;
         ImovelDomain imovel = new ImovelDomain(1000, "Rua A, 123", 50, true);
 
-        service.cadastrar(imovel);
+        service.cadastrar(imovel, usuarioId);
 
         verify(repositoryPort).salvar(imovel);
     }
@@ -48,28 +49,31 @@ class CadastrarImovelServiceTest {
     @Test
     void deveEditarImovelQuandoNaoHouverContratoAtivo() {
         Long id = 1L;
+        Long usuarioId = 100L;
         ImovelDomain imovelExistente = new ImovelDomain(1000, "Rua A, 123", 50, true);
         ImovelDomain imovelAtualizado = new ImovelDomain(2000, "Rua B, 456", 80, true);
-        when(repositoryPort.buscarPorID(id)).thenReturn(imovelExistente);
-        when(contratoRepositoryPort.buscarPorImovelId(id)).thenReturn(Collections.emptyList());
+        when(repositoryPort.buscarPorID(id, usuarioId)).thenReturn(imovelExistente);
+        when(contratoRepositoryPort.buscarPorImovelId(id, usuarioId)).thenReturn(Collections.emptyList());
 
-        service.editarPorID(id, imovelAtualizado);
+        service.editarPorID(id, imovelAtualizado, usuarioId);
 
-        verify(repositoryPort).editarPorID(id, imovelAtualizado);
+        verify(repositoryPort).editarPorID(id, imovelAtualizado, usuarioId);
     }
 
     @Test
     void deveLancarExcecaoAoEditarImovelInexistente() {
         Long id = 99L;
+        Long usuarioId = 100L;
         ImovelDomain imovelAtualizado = new ImovelDomain(2000, "Rua B", 80, true);
-        when(repositoryPort.buscarPorID(id)).thenThrow(new EntityNotFoundException());
+        when(repositoryPort.buscarPorID(id, usuarioId)).thenThrow(new EntityNotFoundException());
 
-        assertThrows(SemImovelException.class, () -> service.editarPorID(id, imovelAtualizado));
+        assertThrows(SemImovelException.class, () -> service.editarPorID(id, imovelAtualizado, usuarioId));
     }
 
     @Test
     void deveLancarExcecaoAoEditarImovelComContratoAtivo() {
         Long id = 1L;
+        Long usuarioId = 100L;
         ImovelDomain imovelExistente = new ImovelDomain(1000, "Rua A", 50, true);
         ImovelDomain imovelAtualizado = new ImovelDomain(2000, "Rua B", 80, true);
         ContratoDomain contratoAtivo = new ContratoDomain(
@@ -77,17 +81,18 @@ class CadastrarImovelServiceTest {
                 new BigDecimal("1500"), LocalDate.now(), LocalDate.now().plusMonths(6),
                 new BigDecimal("1.5"), TipoContrato.ALUGUEL, StatusContrato.ATIVO
         );
-        when(repositoryPort.buscarPorID(id)).thenReturn(imovelExistente);
-        when(contratoRepositoryPort.buscarPorImovelId(id)).thenReturn(List.of(contratoAtivo));
+        when(repositoryPort.buscarPorID(id, usuarioId)).thenReturn(imovelExistente);
+        when(contratoRepositoryPort.buscarPorImovelId(id, usuarioId)).thenReturn(List.of(contratoAtivo));
 
-        assertThrows(ImovelComContratoAtivo.class, () -> service.editarPorID(id, imovelAtualizado));
+        assertThrows(ImovelComContratoAtivo.class, () -> service.editarPorID(id, imovelAtualizado, usuarioId));
 
-        verify(repositoryPort, never()).editarPorID(any(), any());
+        verify(repositoryPort, never()).editarPorID(any(), any(), any());
     }
 
     @Test
     void deveEditarImovelComContratoFinalizado() {
         Long id = 1L;
+        Long usuarioId = 100L;
         ImovelDomain imovelExistente = new ImovelDomain(1000, "Rua A", 50, true);
         ImovelDomain imovelAtualizado = new ImovelDomain(2000, "Rua B", 80, true);
         ContratoDomain contratoFinalizado = new ContratoDomain(
@@ -95,21 +100,22 @@ class CadastrarImovelServiceTest {
                 new BigDecimal("1500"), LocalDate.now(), LocalDate.now().plusMonths(6),
                 new BigDecimal("1.5"), TipoContrato.ALUGUEL, StatusContrato.FINALIZADO
         );
-        when(repositoryPort.buscarPorID(id)).thenReturn(imovelExistente);
-        when(contratoRepositoryPort.buscarPorImovelId(id)).thenReturn(List.of(contratoFinalizado));
+        when(repositoryPort.buscarPorID(id, usuarioId)).thenReturn(imovelExistente);
+        when(contratoRepositoryPort.buscarPorImovelId(id, usuarioId)).thenReturn(List.of(contratoFinalizado));
 
-        service.editarPorID(id, imovelAtualizado);
+        service.editarPorID(id, imovelAtualizado, usuarioId);
 
-        verify(repositoryPort).editarPorID(id, imovelAtualizado);
+        verify(repositoryPort).editarPorID(id, imovelAtualizado, usuarioId);
     }
 
     @Test
     void deveAlterarDisponibilidadeComSucesso() {
         Long id = 1L;
+        Long usuarioId = 100L;
         ImovelDomain imovel = new ImovelDomain(1000, "Rua A", 50, true);
-        when(repositoryPort.buscarPorID(id)).thenReturn(imovel);
+        when(repositoryPort.buscarPorID(id, usuarioId)).thenReturn(imovel);
 
-        service.alterarDisponibilidade(id, false);
+        service.alterarDisponibilidade(id, false, usuarioId);
 
         verify(repositoryPort).salvar(imovel);
     }

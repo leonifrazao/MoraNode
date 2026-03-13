@@ -28,20 +28,22 @@ class DeletaImovelServiceTest {
     @Test
     void deveLancarExcecaoQuandoImovelTiverContratoAtivo() {
         Long id = 1L;
-        when(contratoRepositoryPort.existeContratoAtivoParaImovel(id)).thenReturn(true);
+        Long usuarioId = 100L;
+        when(contratoRepositoryPort.existeContratoAtivoParaImovel(id, usuarioId)).thenReturn(true);
 
-        assertThrows(ImovelComContratoAtivo.class, () -> service.deletar(id));
+        assertThrows(ImovelComContratoAtivo.class, () -> service.deletar(id, usuarioId));
 
-        verify(repositoryPort, never()).deletar(id);
+        verify(repositoryPort, never()).deletar(id, usuarioId);
     }
 
     @Test
     void deveDeletarComSucessoQuandoNaoHouverContratoAtivo() {
         Long id = 1L;
-        when(contratoRepositoryPort.existeContratoAtivoParaImovel(id)).thenReturn(false);
+        Long usuarioId = 100L;
+        when(contratoRepositoryPort.existeContratoAtivoParaImovel(id, usuarioId)).thenReturn(false);
 
-        service.deletar(id);
+        service.deletar(id, usuarioId);
 
-        verify(repositoryPort, times(1)).deletar(id);
+        verify(repositoryPort, times(1)).deletar(id, usuarioId);
     }
 }

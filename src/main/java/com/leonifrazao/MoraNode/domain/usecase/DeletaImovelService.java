@@ -14,14 +14,14 @@ public class DeletaImovelService implements DeletaImovelUseCase {
 
 
     @Override
-    public void deletar(Long id) {
+    public void deletar(Long id, Long usuarioId) {
 
-        repositoryPort.buscarPorID(id);
+        repositoryPort.buscarPorID(id, usuarioId); // Garante que o imóvel é do usuário
 
-        if (contratoRepositoryPort.existeContratoAtivoParaImovel(id)) {
+        if (contratoRepositoryPort.existeContratoAtivoParaImovel(id, usuarioId)) {
             throw new ImovelComContratoAtivo();
         }
 
-        repositoryPort.deletar(id);
+        repositoryPort.deletar(id, usuarioId);
     }
 }

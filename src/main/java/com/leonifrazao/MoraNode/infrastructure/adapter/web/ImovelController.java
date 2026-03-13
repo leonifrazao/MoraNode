@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.leonifrazao.MoraNode.infrastructure.security.UsuarioDetalhe;
 
 import java.util.List;
 
@@ -24,34 +26,34 @@ public class ImovelController {
     private final DeletaImovelUseCase imovelDeleteService;
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePorID(@PathVariable Long id) {
-        imovelDeleteService.deletar(id);
+    public ResponseEntity<Void> deletePorID(@PathVariable Long id, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        imovelDeleteService.deletar(id, usuario.getId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ImovelResponse> buscarPorID(@PathVariable Long id) {
-        ImovelDomain imovel = imovelBuscaService.buscaID(id);
+    public ResponseEntity<ImovelResponse> buscarPorID(@PathVariable Long id, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        ImovelDomain imovel = imovelBuscaService.buscaID(id, usuario.getId());
         ImovelResponse resposta = ImovelResponse.fromDomain(imovel);
         return ResponseEntity.ok(resposta);
     }
 
     @GetMapping
-    public ResponseEntity<List<ImovelResponse>> busca() {
-        List<ImovelResponse> imoveis = imovelBuscaService.buscar().stream()
+    public ResponseEntity<List<ImovelResponse>> busca(@AuthenticationPrincipal UsuarioDetalhe usuario) {
+        List<ImovelResponse> imoveis = imovelBuscaService.buscar(usuario.getId()).stream()
                 .map(ImovelResponse::fromDomain).toList();
         return ResponseEntity.ok(imoveis);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Void> editarPorID(@PathVariable Long id,@RequestBody @Valid ImovelRequest request ) {
-        imovelService.editarPorID(id, request.toDomain());
+    public ResponseEntity<Void> editarPorID(@PathVariable Long id, @RequestBody @Valid ImovelRequest request, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        imovelService.editarPorID(id, request.toDomain(), usuario.getId());
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 
     @PostMapping
-    public ResponseEntity<Void> criar(@RequestBody @Valid ImovelRequest request) {
-        imovelService.cadastrar(request.toDomain());
+    public ResponseEntity<Void> criar(@RequestBody @Valid ImovelRequest request, @AuthenticationPrincipal UsuarioDetalhe usuario) {
+        imovelService.cadastrar(request.toDomain(), usuario.getId());
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 }

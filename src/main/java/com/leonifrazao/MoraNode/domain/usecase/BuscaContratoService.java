@@ -13,17 +13,17 @@ public class BuscaContratoService implements BuscaContratoUseCase {
     private final ContratoRepositoryPort repositoryPort;
 
     @Override
-    public List<ContratoDomain> buscar() {
-        return repositoryPort.buscar();
+    public List<ContratoDomain> buscar(Long usuarioId) {
+        return repositoryPort.buscar(usuarioId);
     }
 
     @Override
-    public ContratoDomain buscarPorId(Long id) {
-        return repositoryPort.buscarPorId(id);
+    public ContratoDomain buscarPorId(Long id, Long usuarioId) {
+        return repositoryPort.buscarPorId(id, usuarioId);
     }
 
     @Override
-    public List<ContratoDomain> buscarPorImovelId(Long id) {
-        return repositoryPort.buscarPorImovelId(id);
+    public List<ContratoDomain> buscarPorImovelId(Long id, Long usuarioId) {
+        return repositoryPort.buscarPorImovelId(id, usuarioId);
     }
 }

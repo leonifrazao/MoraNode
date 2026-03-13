@@ -3,6 +3,7 @@ package com.leonifrazao.MoraNode.infrastructure.config;
 import com.leonifrazao.MoraNode.domain.port.out.ContratoRepositoryPort;
 import com.leonifrazao.MoraNode.domain.port.out.ImovelRepositoryPort;
 import com.leonifrazao.MoraNode.domain.port.out.NotificacaoImovelPort;
+import com.leonifrazao.MoraNode.domain.port.out.UsuarioRepositoryPort;
 import com.leonifrazao.MoraNode.domain.usecase.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -33,5 +34,10 @@ public class BeanConfiguration {
     @Bean
     public BuscaContratoService buscaContratoService(ContratoRepositoryPort repositoryPort) {
         return new BuscaContratoService(repositoryPort);
+    }
+
+    @Bean
+    public RegistroUsuarioService registroUsuarioService(UsuarioRepositoryPort usuarioRepositoryPort) {
+        return new RegistroUsuarioService(usuarioRepositoryPort);
     }
 }

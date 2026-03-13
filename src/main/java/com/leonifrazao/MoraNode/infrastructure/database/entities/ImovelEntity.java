@@ -1,4 +1,5 @@
 package com.leonifrazao.MoraNode.infrastructure.database.entities;
+
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,6 +16,9 @@ public class ImovelEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
+    private Long usuarioId;
 
     private int valor;
 

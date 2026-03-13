@@ -14,6 +14,8 @@ public class ContratoDomain {
     private Long id;
     @Setter(AccessLevel.PACKAGE)
     private Long imovelId;
+    @Setter
+    private Long usuarioId;
 
     private String nomeDono;
     private String nomeInquilino;

@@ -21,20 +21,20 @@ public class CadastrarImovelService implements CadastrarImovelUseCase {
     private final ContratoRepositoryPort contratoRepositoryPort;
 
     @Override
-    public void cadastrar(ImovelDomain dominio) {
-
+    public void cadastrar(ImovelDomain dominio, Long usuarioId) {
+        dominio.setUsuarioId(usuarioId);
         repositoryPort.salvar(dominio);
     }
 
     @Override
-    public void editarPorID(Long id, ImovelDomain dominio) {
+    public void editarPorID(Long id, ImovelDomain dominio, Long usuarioId) {
         try {
-            repositoryPort.buscarPorID(id);
+            repositoryPort.buscarPorID(id, usuarioId);
         } catch (EntityNotFoundException e) {
             throw new SemImovelException("Usuário não possui residência vinculada", e);
         }
 
-        List<ContratoDomain> contratos = contratoRepositoryPort.buscarPorImovelId(id);
+        List<ContratoDomain> contratos = contratoRepositoryPort.buscarPorImovelId(id, usuarioId);
 
         boolean temContratoAtivo = contratos.stream()
                 .anyMatch(c -> c.getStatusContrato() == StatusContrato.ATIVO);
@@ -45,13 +45,14 @@ public class CadastrarImovelService implements CadastrarImovelUseCase {
             );
         }
 
-        repositoryPort.editarPorID(id, dominio);
+        dominio.setUsuarioId(usuarioId);
+        repositoryPort.editarPorID(id, dominio, usuarioId);
     }
 
     @Transactional
     @Override
-    public void alterarDisponibilidade(Long id, boolean disponivel) {
-        ImovelDomain imovel = repositoryPort.buscarPorID(id);
+    public void alterarDisponibilidade(Long id, boolean disponivel, Long usuarioId) {
+        ImovelDomain imovel = repositoryPort.buscarPorID(id, usuarioId);
         imovel.setDisponivel(disponivel);
         repositoryPort.salvar(imovel);
     }

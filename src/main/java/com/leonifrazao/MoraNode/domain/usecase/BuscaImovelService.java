@@ -13,13 +13,13 @@ public class BuscaImovelService implements BuscaImovelUseCase {
     private final ImovelRepositoryPort repositoryPort;
 
     @Override
-    public ImovelDomain buscaID(Long id) {
-        return repositoryPort.buscarPorID(id);
+    public ImovelDomain buscaID(Long id, Long usuarioId) {
+        return repositoryPort.buscarPorID(id, usuarioId);
     }
 
     @Override
-    public List<ImovelDomain> buscar() {
-        return repositoryPort.buscar();
+    public List<ImovelDomain> buscar(Long usuarioId) {
+        return repositoryPort.buscar(usuarioId);
     }
 
 }

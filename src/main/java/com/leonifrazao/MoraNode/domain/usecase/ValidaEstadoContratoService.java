@@ -10,7 +10,7 @@ public class ValidaEstadoContratoService implements ValidaEstadoContratoUseCase 
     private final ContratoRepositoryPort repositoryPort;
 
     @Override
-    public boolean existeContratoAtivoParaImovel(Long imovelId) {
-        return repositoryPort.existeContratoAtivoParaImovel(imovelId);
+    public boolean existeContratoAtivoParaImovel(Long imovelId, Long usuarioId) {
+        return repositoryPort.existeContratoAtivoParaImovel(imovelId, usuarioId);
     }
 }

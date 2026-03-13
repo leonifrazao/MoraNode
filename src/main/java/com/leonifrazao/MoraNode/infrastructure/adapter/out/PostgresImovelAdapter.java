@@ -9,7 +9,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 @RequiredArgsConstructor
@@ -17,9 +16,8 @@ public class PostgresImovelAdapter implements ImovelRepositoryPort {
 
     private final SpringDataImovelRepository jpaRepository;
 
-
     @Override
-    public void deletar(Long id) {
+    public void deletar(Long id, Long usuarioId) {
         jpaRepository.deleteById(id);
     }
 
@@ -29,21 +27,22 @@ public class PostgresImovelAdapter implements ImovelRepositoryPort {
     }
 
     @Override
-    public void editarPorID(Long id, ImovelDomain imovel) {
+    public void editarPorID(Long id, ImovelDomain imovel, Long usuarioId) {
         imovel.setId(id);
+        imovel.setUsuarioId(usuarioId);
         jpaRepository.save(ImovelMapper.fromDomain(imovel));
     }
 
     @Override
-    public ImovelDomain buscarPorID(Long id) {
-        ImovelEntity entidade = jpaRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Imóvel não encontrado com o ID: " + id));
+    public ImovelDomain buscarPorID(Long id, Long usuarioId) {
+        ImovelEntity entidade = jpaRepository.findByIdAndUsuarioId(id, usuarioId)
+                .orElseThrow(() -> new RuntimeException("Imóvel não encontrado ou você não tem acesso a ele: " + id));
         return ImovelMapper.toDomain(entidade);
     }
 
     @Override
-    public List<ImovelDomain> buscar() {
-        List<ImovelEntity> entidades = jpaRepository.findAll();
+    public List<ImovelDomain> buscar(Long usuarioId) {
+        List<ImovelEntity> entidades = jpaRepository.findByUsuarioId(usuarioId);
         return entidades.stream()
                 .map(ImovelMapper::toDomain)
                 .toList();

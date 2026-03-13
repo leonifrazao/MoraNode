@@ -71,3 +71,30 @@ export interface ContratoRequest {
 export interface StatusRequest {
     statusContrato: StatusContrato;
 }
+
+// ============================================
+// AUTHENTICATION (Login, Registro, Tokens)
+// ============================================
+
+export interface LoginRequest {
+    email: string;
+    senha: string;
+}
+
+export interface RegistroRequest {
+    nome: string;
+    email: string;
+    senha: string;
+}
+
+export interface TokenResponse {
+    accessToken: string;
+    refreshToken: string;
+}
+
+export interface JwtPayload {
+    sub: string;     // email
+    papel: string;   // role (USUARIO, ADMIN)
+    exp: number;     // expiration time
+    iat: number;     // issued at
+}

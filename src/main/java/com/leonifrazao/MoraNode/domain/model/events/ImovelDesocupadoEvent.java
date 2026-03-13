@@ -5,7 +5,8 @@ import java.io.Serializable;
 public record ImovelDesocupadoEvent(
         Long imovelId,
         Long contratoId,
-        String tipoContrato
+        String tipoContrato,
+        Long usuarioId
 ) implements Serializable {
 }
 

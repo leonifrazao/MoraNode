@@ -21,6 +21,9 @@ public class ContratoEntity {
 
     private Long imovelId;
 
+    @Column(nullable = false)
+    private Long usuarioId;
+
     @Column(length = 255)
     private String nomeDono;
 
