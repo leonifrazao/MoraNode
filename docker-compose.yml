@@ -8,15 +8,26 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U ${DB_USER:-moranode}" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   zookeeper:
     image: confluentinc/cp-zookeeper:7.4.0
+    container_name: moranode-zookeeper
+    restart: unless-stopped
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
+      ZOOKEEPER_TICK_TIME: 2000
 
   kafka:
     image: confluentinc/cp-kafka:7.4.0
     container_name: moranode-kafka
+    restart: unless-stopped
     depends_on:
       - zookeeper
     ports:
@@ -28,9 +39,18 @@ services:
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: PLAINTEXT:PLAINTEXT,PLAINTEXT_HOST:PLAINTEXT
       KAFKA_INTER_BROKER_LISTENER_NAME: PLAINTEXT
       KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    volumes:
+      - kafka_data:/var/lib/kafka/data
+    healthcheck:
+        test: [ "CMD", "kafka-broker-api-versions", "--bootstrap-server", "localhost:9092" ]
+        interval: 30s
+        timeout: 10s
+        retries: 3
 
   kafdrop:
     image: obsidiandynamics/kafdrop
+    container_name: moranode-kafdrop
+    restart: unless-stopped
     depends_on:
       - kafka
     ports:
@@ -39,13 +59,40 @@ services:
       KAFKA_BROKERCONNECT: kafka:29092
 
   app:
-    build: .
+    build:
+      context: .
+      dockerfile: Dockerfile
     container_name: moranode-app
+    restart: unless-stopped
     depends_on:
-      - db
-      - kafka
+      db:
+        condition: service_healthy
+      kafka:
+        condition: service_started
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/moranode_db
-      SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+        SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/${DB_NAME:-moranode_db}
+        SPRING_DATASOURCE_USERNAME: ${DB_USER:-moranode}
+        SPRING_DATASOURCE_PASSWORD: ${DB_PASSWORD:-moranode123}
+        SPRING_KAFKA_BOOTSTRAP_SERVERS: kafka:29092
+  web:
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    container_name: moranode-web
+    restart: unless-stopped
+    depends_on:
+      - app
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=production
+
+volumes:
+  postgres_data:
+  kafka_data:
+
+networks:
+  default:
+    name: moranode-network
