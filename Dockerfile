@@ -11,6 +11,8 @@ RUN bun run build
 FROM maven:3.9.6-eclipse-temurin-21 AS java-builder
 WORKDIR /app
 COPY pom.xml .
+# Baixa as dependências do Maven primeiro para fazer cache dessa camada no Docker!
+RUN mvn dependency:go-offline -B
 COPY .mvn .mvn
 COPY mvnw .
 COPY src src
