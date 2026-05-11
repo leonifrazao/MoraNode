@@ -1,5 +1,5 @@
 // pages/Contratos.tsx
-import { useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { contratoService } from "@/services/api";
 import { ContratoResponse, StatusContrato } from "@/types";
 import {
@@ -80,7 +80,7 @@ export function Contratos() {
     const [searchTerm, setSearchTerm] = useState("");
     const [statusFilter, setStatusFilter] = useState<StatusContrato | "TODOS">("TODOS");
 
-    const carregarDados = async () => {
+    const carregarDados = useCallback(async () => {
         setIsLoading(true);
         try {
             const res = await contratoService.listar();
@@ -90,11 +90,11 @@ export function Contratos() {
         } finally {
             setIsLoading(false);
         }
-    };
+    }, []);
 
     useEffect(() => {
         carregarDados();
-    }, []);
+    }, [carregarDados]);
 
     // Dados filtrados
     const contratosFiltrados = useMemo(() => {

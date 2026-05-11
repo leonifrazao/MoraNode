@@ -76,7 +76,7 @@ export function NovoContratoModal({ onSucesso }: Props) {
             })
             .finally(() => setLoadingImoveis(false));
     }
-}, [open, toast]);
+}, [open]);
 
     const handleImovelChange = (imovelId: string) => {
         const id = Number(imovelId);
