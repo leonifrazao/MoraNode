@@ -17,6 +17,7 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
+import java.text.Normalizer;
 
 import java.util.Map;
 
@@ -48,8 +49,11 @@ public class AutenticacaoController {
 
     @PostMapping("/registro")
     public ResponseEntity<Void> registro(@RequestBody @Valid RegistroRequest request) {
+
+
+	String nomeNormalizado = Normalizer.normalize(request.nome(), Normalizer.Form.NFD);
         String senhaHash = passwordEncoder.encode(request.senha());
-        registroUsuarioUseCase.registrar(request.nome(), request.email(), senhaHash);
+        registroUsuarioUseCase.registrar(nomeNormalizado, request.email(), senhaHash);
         return ResponseEntity.status(HttpStatus.CREATED).build();
     }
 

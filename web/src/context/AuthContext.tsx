@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
 import { JwtPayload, LoginRequest } from '../types';
 import { authService } from '../services/api';
+import api from '../services/api';
+
 
 interface AuthContextType {
     user: JwtPayload | null;
@@ -40,7 +42,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
                 localStorage.removeItem('accessToken');
                 localStorage.removeItem('refreshToken');
             }
-        }
+        } 
         setIsLoading(false);
     }, []);
 
@@ -50,6 +52,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         
         localStorage.setItem('accessToken', accessToken);
         localStorage.setItem('refreshToken', refreshToken);
+	api.defaults.headers.common['Authorization'] = `Bearer ${accessToken}`;
         
         setUser(parseJwt(accessToken));
     };

@@ -19,9 +19,7 @@ public class CorsConfiguracao {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration config = new CorsConfiguration();
 
-        // Em vez de bloquear origens fixas e dar o erro seco, permitimos padrões.
-        // O List.of("*") permite qualquer origin em desenvolvimento.
-        config.setAllowedOriginPatterns(List.of("*"));
+        config.setAllowedOriginPatterns(List.of(allowedOrigins));
         config.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
         config.setAllowedHeaders(List.of("*"));
         config.setAllowCredentials(true);

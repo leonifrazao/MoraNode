@@ -45,9 +45,9 @@ public class SegurancaConfiguracao {
                         .accessDeniedHandler((request, response, accessDeniedException) -> exceptionResolver
                                 .resolveException(request, response, null, accessDeniedException)))
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/registro", "/auth/refresh").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/imoveis/**", "/contratos/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/imoveis/**", "/contratos/**").authenticated()
                         .requestMatchers(HttpMethod.POST, "/imoveis/**", "/contratos/**").authenticated()
                         .requestMatchers(HttpMethod.PUT, "/imoveis/**").authenticated()
                         .requestMatchers(HttpMethod.PATCH, "/contratos/**").authenticated()
