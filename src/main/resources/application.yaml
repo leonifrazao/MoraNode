@@ -17,7 +17,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: validate 
     show-sql: true
     properties:
       hibernate:
@@ -47,7 +47,7 @@ spring:
       port: 6379
 
 cors:
-  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:8080,http://localhost:3000}
+  allowed-origins: ${CORS_ALLOWED_ORIGINS:http://localhost:8080,http://localhost:3000, http://moranode.app, https://moranode.app}
 
 jwt:
   secret: ${JWT_SECRET}

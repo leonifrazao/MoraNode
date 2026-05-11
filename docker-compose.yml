@@ -1,6 +1,7 @@
 services:
   db:
     image: postgres:18
+    profiles: ["debug", "manual"]
     container_name: moranode-db
     environment:
       POSTGRES_DB: ${DB_NAME}
@@ -65,8 +66,6 @@ services:
     container_name: moranode-app
     restart: unless-stopped
     depends_on:
-      db:
-        condition: service_healthy
       kafka:
         condition: service_started
     ports:
