@@ -3,6 +3,7 @@ package com.leonifrazao.MoraNode.infrastructure.security;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;
+import java.nio.charset.StandardCharsets;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Component;
 import javax.crypto.SecretKey;
 import java.util.Date;
 import java.util.function.Function;
+import java.security.SecureRandom;
 
 @Component
 public class JwtProvedorToken {
@@ -73,7 +75,7 @@ public class JwtProvedorToken {
     }
 
     private SecretKey obterChave() {
-        byte[] chaveBytes = Decoders.BASE64.decode(segredo);
-        return Keys.hmacShaKeyFor(chaveBytes);
+	byte[] keyBytes = this.segredo.getBytes(StandardCharsets.UTF_8);
+	return Keys.hmacShaKeyFor(keyBytes);
     }
 }
